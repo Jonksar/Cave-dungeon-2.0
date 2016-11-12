@@ -35,16 +35,11 @@ def game_quit():
     sys.exit()  # terminate the program from this line
 
 
-# minu muudatus
 # called every frame
 def update():
     global cam_pos
 
-    collison = map_draw.map_collide(player_obj.rect, map_data, cam_pos)
-    if collison:
-        print(collison.x, collison.y)
-
-    player_obj.update()
+    player_obj.update(map_draw.rect_list)
 
     # update camera position
     # cam_pos_center = [cam_pos[0] + RESOLUTION[0]/2, cam_pos[1] + RESOLUTION[1]/2]
@@ -84,11 +79,6 @@ def game_start():
                 game_quit()
 
             elif e.type == pygame.KEYDOWN:
-                print('PLAYER POSITION',
-                      (player_obj.pos[0] + 0.5*TILE_SIZE)//TILE_SIZE,
-                      (player_obj.pos[1] + 0.5*TILE_SIZE)//TILE_SIZE,
-                      player_obj.pos)
-
                 if e.key == pygame.K_a or e.key == pygame.K_LEFT:
                     player_obj.vel[0] = -player_obj.speed
 

@@ -20,19 +20,20 @@ class Player:
         self.color = [58, 49, 188]
 
     # called every frame
-    def update(self):
+    def update(self, rect_list):
         # when moving diagonally the velocity must be changed so that the player wouldn't move faster
         if abs(self.vel[0]) == self.speed and abs(self.vel[1]) == self.speed:
             self.vel[0] /= 1.414
             self.vel[1] /= 1.414
 
         # update the character position
-        self.pos[0] += self.vel[0]
-        self.pos[1] += self.vel[1]
+        if not self.collide(rect_list, self.vel[0], 0):
+            self.pos[0] += self.vel[0]
+            self.rect.x = self.pos[0]
 
-        # update the character rectangle
-        self.rect.x = self.pos[0]
-        self.rect.y = self.pos[1]
+        if not self.collide(rect_list, 0, self.vel[1]):
+            self.pos[1] += self.vel[1]
+            self.rect.y = self.pos[1]
 
     # called every frame after the update function
     def draw(self, surface, cam_pos):
@@ -48,3 +49,15 @@ class Player:
 
         pygame.draw.polygon(surface, self.color, [point1, point2, point3], 3)
 
+    def collide(self, collide_list, dx, dy):
+        rect = self.rect.copy()
+        rect.x += dx
+        rect.y += dy
+        rect.inflate_ip(-TILE_SIZE*0.25, -TILE_SIZE*0.25)
+
+        index = rect.collidelist(collide_list)
+
+        if index != -1:
+            return True
+
+        return False
