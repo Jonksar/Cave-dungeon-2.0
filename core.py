@@ -70,6 +70,9 @@ def draw(surface):
 def game_start():
     global ms, current_fps
 
+    shoot = False
+    interval = 200
+
     # game loop
     while True:
         for e in pygame.event.get():
@@ -103,6 +106,18 @@ def game_start():
 
                 elif e.key == pygame.K_s or e.key == pygame.K_DOWN:
                     player_obj.vel[1] = 0
+
+            elif e.type == pygame.MOUSEBUTTONDOWN:
+                shoot = True
+
+            elif e.type == pygame.MOUSEBUTTONUP:
+                shoot = False
+
+        if shoot:
+            interval -= ms
+            if interval <= 0 :
+                interval = 200
+                player_obj.shoot(pygame.mouse.get_pos())
 
         update()
         draw(window)

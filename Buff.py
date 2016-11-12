@@ -2,6 +2,7 @@ import random
 from Timer import Timer
 import itertools
 
+
 def interpolate(v0, v1, t):
     if isinstance(v0, tuple) or isinstance(v0, list):
         return tuple(((1-t)*v0[i] + t*v1[i] for i in range(len(v0))))
@@ -11,6 +12,7 @@ def interpolate(v0, v1, t):
 
     elif isinstance(v0, float):
         return (1 - t) * v0 + t * v1
+
 
 def gen_colors(size, col='fire'):
     # HASHTAG PROCEDURAL GENERATION IS LIFE
@@ -67,6 +69,7 @@ class FireBuff(Buff):
             # Suicide
             kwargs['buff_list'].remove(self)
             del self
+
 
 class IceBuff(Buff):
     def __init__(self, duration):
