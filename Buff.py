@@ -77,4 +77,14 @@ class IceBuff(Buff):
         self.timer = Timer()
 
         # Colors are nice
-        self.color =
+        self.color = gen_colors(1, col='ice')
+
+    def __call__(self, player):
+        pass
+
+    def update(self, *args, **kwargs):
+        # If time lived > maximum lifetime
+        if self.timer.time_since_start() >= self.max_duration:
+            # Suicide
+            kwargs['buff_list'].remove(self)
+            del self
