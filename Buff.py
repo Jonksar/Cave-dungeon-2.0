@@ -69,7 +69,7 @@ class FireBuff(Buff):
             del self
 
 class IceBuff(Buff):
-    def __init__(self, duration):
+    def __init__(self, duration, slow_amount = 0.45):
         super(Buff, self).__init__()
 
         # Times
@@ -78,6 +78,9 @@ class IceBuff(Buff):
 
         # Colors are nice
         self.color = gen_colors(1, col='ice')
+
+        # properties
+        self.slow_amount = slow_amount
 
     def __call__(self, player):
         pass
