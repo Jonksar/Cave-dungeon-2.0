@@ -13,7 +13,7 @@ class Map:
         self.map_data()
 
     def draw(self, surface, cam_pos):
-        map_draw.map_draw(surface, self.map_data, cam_pos)
+        return map_draw.map_draw(surface, self.map_data, cam_pos)
 
 
 class GameobjectListUpdater:
@@ -29,6 +29,7 @@ class GameobjectListUpdater:
         self.player = self.gameobj_dict['player']
         self.cam_pos = [50, 50]
         self.def_font = def_font
+        self.map_rect_list = [pygame.Rect(0,0,0,0)]
 
     def iter(self):
         self._update()
@@ -40,7 +41,7 @@ class GameobjectListUpdater:
         self.gameobj_dict['surface'].fill([0, 0, 0, 0])
 
         # Draw the map
-        self.gameobj_dict['map'].draw(self.gameobj_dict['surface'], self.cam_pos)
+        self.map_rect_list = self.gameobj_dict['map'].draw(self.gameobj_dict['surface'], self.cam_pos)
 
         for item in self.obj_list:
             item.draw(self.gameobj_dict['char_surface'], self.cam_pos)
@@ -52,13 +53,7 @@ class GameobjectListUpdater:
         surface.blit(fps_surface, [5, 5])
 
     def _update(self):
-
-        collison = map_draw.map_collide(self.player.rect, self.gameobj_dict['map'].map_data, self.cam_pos)
-
-        if collison:
-            print(collison.x, collison.y)
-
-        self.player.update()
+        self.player.update(self.map_rect_list)
 
         # update camera position
         # cam_pos_center = [cam_pos[0] + RESOLUTION[0]/2, cam_pos[1] + RESOLUTION[1]/2]

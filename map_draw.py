@@ -2,11 +2,8 @@ import pygame
 from constants import *
 from itertools import product
 
-rect_list = []
-
 
 def map_draw(surface, map_data, cam_pos):
-    global rect_list
 
     tiles_x = RESOLUTION[0] // TILE_SIZE + 1
     tiles_y = RESOLUTION[1] // TILE_SIZE + 1
@@ -34,3 +31,5 @@ def map_draw(surface, map_data, cam_pos):
                 rect.x += cam_pos[0]
                 rect.y += cam_pos[1]
                 rect_list.append(rect)
+
+    return rect_list
