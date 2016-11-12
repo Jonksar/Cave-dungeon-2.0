@@ -28,13 +28,13 @@ current_fps = 1000//ms
 default_font = pygame.font.Font(None, 26)
 
 gameObjectListUpdater = GameobjectListUpdater(char_surface=character_surface, surface=window, player=player_obj, def_font=default_font)
+
 # called when the window is closed
 def game_quit():
     pygame.quit()  # close pygame window
     sys.exit()  # terminate the program from this line
 
 
-# minu muudatus
 # called every frame
 def update():
     gameObjectListUpdater._update()
@@ -48,6 +48,9 @@ def draw(surface):
 def game_start():
     global ms, current_fps
 
+    shoot = False
+    interval = 200
+
     # game loop
     while True:
         for e in pygame.event.get():
@@ -57,11 +60,6 @@ def game_start():
                 game_quit()
 
             elif e.type == pygame.KEYDOWN:
-                print('PLAYER POSITION',
-                      (player_obj.pos[0] + 0.5*TILE_SIZE)//TILE_SIZE,
-                      (player_obj.pos[1] + 0.5*TILE_SIZE)//TILE_SIZE,
-                      player_obj.pos)
-
                 if e.key == pygame.K_a or e.key == pygame.K_LEFT:
                     player_obj.vel[0] = -player_obj.speed
 
@@ -86,6 +84,18 @@ def game_start():
 
                 elif e.key == pygame.K_s or e.key == pygame.K_DOWN:
                     player_obj.vel[1] = 0
+
+            elif e.type == pygame.MOUSEBUTTONDOWN:
+                shoot = True
+
+            elif e.type == pygame.MOUSEBUTTONUP:
+                shoot = False
+
+        if shoot:
+            interval -= ms
+            if interval <= 0 :
+                interval = 200
+                player_obj.shoot(pygame.mouse.get_pos())
 
         update()
         draw(window)
