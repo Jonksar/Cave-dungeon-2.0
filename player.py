@@ -32,7 +32,7 @@ class Player:
         # the color of the player currently
         self.color = [58, 49, 188]
 
-        self.buff = FireBuff(1000000)
+        self.buff = FireBuff(10)
         self.particle_list = []
 
     # called every frame
@@ -60,7 +60,7 @@ class Player:
             if i.dead:
                 to_kill.append(x)
 
-        for i in to_kill:
+        for i in sorted(to_kill)[::-1]:
                 self.particle_list.pop(i)
 
         while len(self.particle_list) > MAX_PARTICLES:
@@ -104,5 +104,5 @@ class Player:
         for i in range(randint(3, 6)):
             self.particle_list.append(Particle(deepcopy(self.pos),
                                                deepcopy([vel[0]+uniform(-0.3, 0.3), vel[1]+uniform(-0.3, 0.3)]),
-                                               self.buff,
-                                               3))
+                                               FireBuff(duration=3),
+                                               3, 3))

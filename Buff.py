@@ -1,10 +1,14 @@
 import random
 from Timer import Timer
 import itertools
+import math
 
 
 def interpolate(v0, v1, t):
+    t = min(1, max(0, t))
+
     if isinstance(v0, tuple) or isinstance(v0, list):
+        t = math.sqrt(t)
         return tuple(((1-t)*v0[i] + t*v1[i] for i in range(len(v0))))
 
     elif isinstance(v0, int):
@@ -24,7 +28,7 @@ def gen_colors(size, col='fire'):
         for i in range(size):
             x = random.randint(-50, 50)
             y = random.randint(0, 50)
-            res.append((100 +  x, 100 + x, 200 + y))
+            res.append((100 + x, 100 + x, 200 + y))
 
     if size == 1:
         return res[0]
@@ -54,21 +58,17 @@ class FireBuff(Buff):
         self.timer = Timer()
 
         # Colors are nice
-        self.start_color = gen_colors(size=1, col='fire')
+        self.start_color = (255 - random.randint(0, 25), 255 - random.randint(0, 25), 25 - random.randint(0, 25))
+        self.middle_color = ()
+        self.end_color = (255 - random.randint(0, 25), 0 + random.randint(0, 25), 0 + random.randint(0, 25))
         self.cur_color = self.start_color
-        self.end_color = gen_colors(size=1, col='fire')
 
     def __call__(self, player):
         pass
 
     def update(self, *args, **kwargs):
-        self.cur_color = interpolate(self.start_color, self.end_color, self.timer.time_since_start() / self.max_duration)
-
-        # If time lived > maximum lifetime
-        if self.timer.time_since_start() >= self.max_duration:
-            # Suicide
-            kwargs['buff_list'].remove(self)
-            del self
+        self.cur_color = interpolate(self.start_color, self.end_color,
+                                     self.timer.time_since_start() / float(self.max_duration))
 
 
 class IceBuff(Buff):

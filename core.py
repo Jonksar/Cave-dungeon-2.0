@@ -94,7 +94,7 @@ def game_start():
         if shoot:
             interval -= ms
             if interval <= 0 :
-                interval = 200
+                interval = 100
                 player_obj.shoot(pygame.mouse.get_pos())
 
         update()
